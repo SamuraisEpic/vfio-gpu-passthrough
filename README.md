@@ -29,11 +29,11 @@ Libvirt Version | 8.8.0
 
 So, without further ado, lets get started!
 
-### Guide
+## Guide
 
-##### 1. Prerequisites
+#### 1. Prerequisites
 
-###### 1.1: Enabling IOMMU
+##### 1.1: Enabling IOMMU
 This step is mostly the same in every guide. I'll be using Grub, so i'll provide the instructions for Grub, but also for Systemd Boot. The general parameter you're gonna wanna add is `intel_iommu=on` for an Intel CPU, or `amd_iommu=on` for AMD, as well as `iommu=pt` for both manufacturers, and this will apply to both Grub, and Systemd. **\*\*note: I've read in certain guides that assuming IOMMU is enabled in BIOS, The Linux Kernel will automatically enable it on AMD systems. I'm not 100% sure of this so I've added the correct parameter to my own setup just in case. i advise you do the same.**
 
-1.1.1: Enabling IOMMU for Grub
+##### 1.1.1: Enabling IOMMU for Grub
