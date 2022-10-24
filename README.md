@@ -49,4 +49,5 @@ So, in order to allow the Kernel to access IOMMU on Systemd Boot distros, all yo
 
 With that, we're done enabling IOMMU! Time for the next step.
 
-##### 1.2: Verifying IOMMU Groups.
+##### 1.2: Verifying IOMMU Groups
+In order to verify it wotked, the first thing you're goind to do it put in this command: `sudo dmesg | grep VT-d` for Intel, and `sudo dmesg | grep AMD-Vi` for AMD. 
