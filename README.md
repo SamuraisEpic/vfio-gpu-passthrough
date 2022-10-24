@@ -17,11 +17,11 @@ So, why all of this? Well, that's for you to decide. For me it was moving my wor
 
 Thing | Value
 :-----: | :--------:
-CPU | AMD Ryzen 5 5600G
+CPU | AMD Ryzen 5 5600G@4.4GHz
 GPU | ASUS NVIDIA Geforce RTX 2060 12GB
 RAM | 16GB G.SKILL Aegis DDR4 3000 with XMP
 Motherboard | ASUS Prime B550 Plus
-BIOS Version |2403
+BIOS Version | 2403
 Software | Manjaro Linux 21.3.7
 Kernel | 5.17.13-1-VFIO-MANJARO
 QEMU Version | QEMU emulator version 7.1.0
@@ -33,7 +33,20 @@ So, without further ado, lets get started!
 
 #### 1. Prerequisites
 
+##### 1.0: BIOS Settings
+
 ##### 1.1: Enabling IOMMU
 This step is mostly the same in every guide. I'll be using Grub, so i'll provide the instructions for Grub, but also for Systemd Boot. The general parameter you're gonna wanna add is `intel_iommu=on` for an Intel CPU, or `amd_iommu=on` for AMD, as well as `iommu=pt` for both manufacturers, and this will apply to both Grub, and Systemd. **\*\*note: I've read in certain guides that assuming IOMMU is enabled in BIOS, The Linux Kernel will automatically enable it on AMD systems. I'm not 100% sure of this so I've added the correct parameter to my own setup just in case. i advise you do the same.**
 
-##### 1.1.1: Enabling IOMMU for Grub
+###### 1.1.1: Enabling IOMMU for Grub
+In order to enable IOMMU,  you need to edit the Grub settings file. To do that, you can use any text editor you want, but I'll be using `nano`. To open the file you can use root directly, but i'll be using `sudo`. In my case i'll type in `sudo nano /etc/default/grub`. once that's done, you should get a screen like this: ![my grub settings file](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/grub-config-original.png?raw=true)
+
+Now, where it says `GRUB_CMDLINE_LINUX_DEFAULT="quiet udev.log_priority=3"`(this line might look different depending on your distro), you're going to remove `quiet` (to make debugging your boot a little easier + it looks cooler), and add the command for your CPU's IOMMU, as well as `iommu=pt`. So in my case, since I have an AMD CPU, mine would look like this: `GRUB_CMDLINE_LINUX_DEFAULT="udev.log_priority=3 iommu=pt amd_iommu=on"`. Then, just save and quit. For `nano`, that's Ctrl+O, Enter, and Ctrl+X. So all well and good. Now, to apply these changes, we'll have to regenerate the Grub configuration file. This is super easy, and is universal across any distro that uses Grub. just type `sudo grub-mkconfig -o /boot/grub/grub.cfg` into a terminal, and you're good to go.
+
+###### 1.1.2: Enabling IOMMU for Systemd Boot
+For Systemd Boot you can use a tool that comes preinstalled with Pop!\_OS called kernelstub. You can also install it on other distros.
+So, in order to allow the Kernel to access IOMMU on Systemd Boot distros, all you have to do is put in the following commands: `sudo kernelstub --add-options "intel_iommu=on" && sudo kernelstub --add-options "iommu=pt"` for Intel CPUs, or `sudo kernelstub --add-options "amd_iommu=on" && sudo kernelstub --add-options "iommu=pt"` for AMD CPUs.
+
+With that, we're done enabling IOMMU! Time for the next step.
+
+##### 1.2: Verifying IOMMU Groups.
