@@ -41,7 +41,7 @@ The first thing you'll want to enable in the BIOS is Virtualisation. For my boar
 Within here, you're gonna wanna look for `SVM Mode` or `SVM`, and make sure it's set to *enabled*![SVM Mode](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/SVM.png?raw=true) **\*\*Note: this option may be called something else and be located in a different place. Even other ASUS boards like ROG and TUF ones should have it in a different place. This is where it'll be on PRIME AM4 boards. if you're not sure where it is/what it's called, look it up on your board menufacturer's website**
 
 ##### 1.0.2 Enabling IOMMU on the board
-Now, before you can do anything in [1.1](https://github.com/SamuraisEpic/vfio-gpu-passthrough#11-enabling-iommu), you have to do this. *This option is crucial to the rest of the guide since it all depends on IOMMU*
+Now, before you can do anything in [1.1](https://github.com/SamuraisEpic/vfio-gpu-passthrough#11-enabling-iommu), you have to do this. ***This option is crucial to the rest of the guide since it all depends on IOMMU***
 
 
 #### 1.1: Enabling IOMMU
