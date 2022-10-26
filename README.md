@@ -38,9 +38,11 @@ So, without further ado, lets get started!
 ##### 1.0.1: Virtualisation
 The first thing you'll want to enable in the BIOS is Virtualisation. For my board, or generally and ASUS PRIME board, this can be found under the `Advanced` tab in `CPU Configuration`
 ![CPU Options](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/CPU-options.png?raw=true)
-Within here, you're gonna wanna look for `SVM Mode` or `SVM`, and make sure it's set to *enabled*. ![SVM Mode](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/SVM.png?raw=true) **\*\*Note: this option mey be called something else and be located in a different place. Even other ASUS boards like ROG and TUF ones should have it in a different place. This is where it'll be on PRIME boards. if you're not sure where it is/what it's called, look it up on your board menufacturer's website**
+Within here, you're gonna wanna look for `SVM Mode` or `SVM`, and make sure it's set to *enabled*. ![SVM Mode](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/SVM.png?raw=true) **\*\*Note: this option may be called something else and be located in a different place. Even other ASUS boards like ROG and TUF ones should have it in a different place. This is where it'll be on PRIME AM4 boards. if you're not sure where it is/what it's called, look it up on your board menufacturer's website**
 
 ##### 1.0.2 Enabling the iGP and Making it the Primary Video Device
+**\*\*Note: This option might only be available on ASUS PRIME AM4 boards or otherwise. I can't verify this myself since being a broke teen isn't ideal for that. If this option isn't at all on your board, you can safely ignore this option and move on.**
+This option shouldn't be required, but i'll show it anyway for safety. 
 
 
 #### 1.1: Enabling IOMMU
