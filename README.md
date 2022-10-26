@@ -37,15 +37,17 @@ So, without further ado, lets get started!
 
 **\*\*Note: All of these options and all the pictures provided are from ASUS PRIME AM4 motherboards. Since i don't have experience with other boards, you'll have to hunt for those options yourself, or consult your board manufacturer since they may not be called the same thing shown here. On Intel boards IOMMU is typically called `VT-d`, and Virtualisation is typically called `VT-x`. And for AMD users, Virtualisation could be called `AMD-V`, and IOMMU could be called `AMD-Vi`. These are sadly the only pointers i can give for other boards.**
 
-**\*\*Note for 1.3: This setting might not apply at all to your board, or only one of the two options may apply**
+###### **\*\*Note for 1.3: This setting might not apply at all to your board, or only one of the two options may apply**
 
 ##### 1.0.1: Virtualisation
 The first thing you'll want to enable in the BIOS is Virtualisation. For my board, or generally and ASUS PRIME board, this can be found under the `Advanced` tab in `CPU Configuration`
 ![CPU Options](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/CPU-options.png?raw=true)
 Within here, you're gonna wanna look for `SVM Mode` or `SVM`, and make sure it's set to *enabled*![SVM Mode](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/SVM.png?raw=true)
 
-##### 1.0.2 Hardware Enabling IOMMU on the board
+##### 1.0.2: Hardware Enabling IOMMU on the board
 Now, before you can do anything in [1.1](https://github.com/SamuraisEpic/vfio-gpu-passthrough#11-enabling-iommu), you have to do this. ***This option is crucial to the rest of the guide since it all depends on IOMMU*** With that out of the way, this is how to enable IOMMU on ASUS PRIME AM4 boards. Under the `Advanced` tab again, look for `AMD CBS`, or something similar it should be near the bottom, so scroll down if necessary. ![AMD CBS](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/CBS-options.png?raw=true) Within this menu, look for `IOMMU`, and make sure it's set to `Enabled`. ***This is important. make sure this is enabled, because the rest of the guide depends on this being on*** ![IOMMU on](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/IOMMU.png?raw=true).
+
+##### 1.0.3: Enabling the iGP and making it the primary output [see warning]()
 
 
 #### 1.1: Enabling IOMMU within Linux
