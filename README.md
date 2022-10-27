@@ -69,12 +69,11 @@ So, in order to allow the Kernel to access IOMMU on Systemd Boot distros, all yo
 With that, we're done enabling IOMMU! Time for the next step.
 
 #### 1.2: Verifying IOMMU Groups
-In order to verify it wotked, the first thing you're going to do it put in this command: `sudo dmesg | grep VT-d` for Intel, and `sudo dmesg | grep AMD-Vi` for AMD. If you were successful, you should see 
+In order to verify it wotked, the first thing you're going to do it put in this command: `sudo dmesg | grep VT-d` for Intel, and `sudo dmesg | grep AMD-Vi` for AMD. If you were successful, you should see something similar to this for AMD CPUs
 ```
 [    0.292288] pci 0000:00:00.2: AMD-Vi: IOMMU performance counters supported
 [    0.292888] pci 0000:00:00.2: AMD-Vi: Found IOMMU cap 0x40
 [    0.603347] perf/amd_iommu: Detected AMD IOMMU #0 (2 banks, 4 counters/bank).
 [    0.613744] AMD-Vi: AMD IOMMUv2 loaded and initialized
 ```
- for AMD CPUs.
 
