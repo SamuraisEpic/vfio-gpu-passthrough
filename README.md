@@ -108,3 +108,5 @@ This process is very straightforward. All you have to do is type `sudo pacman -S
 
 ##### 1.3.2: Patching your Kernel Yourself
 Now since I'm not especially well versed in this area, i've linked [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial/#----acs-override-patch-optional), which *does* go over this process. This should get you almost all the way through, minus passing it as a param if you use Grub. For that look at [1.3.1](github.com/SamuraisEpic/vfio-gpu-passthrough#1.3.1:-installing-a-different-kernel) For systemd boot on Debian based systems, Bryan Steiner's guide covers that part with `kernelstub`.
+
+And that should do it for the ACS Override Patch. Still with me so far? Good. Next, we'll look at 
