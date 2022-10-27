@@ -81,7 +81,7 @@ In order to verify it worked, the first thing you're going to do it put in this 
 ```
 
 ##### 1.2.2: Checking if IOMMU Groups are Valid
-So what you wanna do here, is run the script provided in the repo, or you can make the script yourself. If you wanna make the script yourself, i recommend placing it in a seperate `vfio` directory within your Home directory. Assuming you've done that, past this glob of code into it, and then run it.
+So what you wanna do here, is run the script provided in the repo, or you can make the script yourself. If you wanna make the script yourself, i recommend placing it in a seperate `vfio` directory within your Home directory. Assuming you've done that, paste this glob of code into it, and then run it.
 
 ```
 #!/bin/bash
