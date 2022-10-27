@@ -11,7 +11,7 @@ So, why all of this? Well, that's for you to decide. For me it was moving my wor
 
 1: This guide focuses on Manjaro, and certain things will only apply to Arch and Manjaro. I'll try to leave Debian commands as well, but i won't be supporting distros like RHEL, Fedora, and Gentoo. Certain steps will also only apply to Arch, and I'll point those out when i get to them
 
-2: Since this is both my first guide, and a beginner-friendly tutorial, i'll leave out more advanced topics like CPU Pinning and Disk Tuning from [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial)
+2: Since this is both my first guide, and a beginner-friendly tutorial, i'll leave out more advanced topics like CPU Pinning and Disk Tuning from [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial#----cpu-pinning)
 
 3: This guide is based off of some other guides linked at the bottom, but it also has my own hardware in mind so your results may vary. You can take a look at my own hardware as a pointer to see if it might work, but this is a very loose reference and should work in most cases regardless.
 
