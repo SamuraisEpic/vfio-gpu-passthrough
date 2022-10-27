@@ -96,3 +96,11 @@ once run, it should give an output similar to this (ids and names may look diffe
 ```
 
 ```
+
+Now, the biggest thing to look for here, is that your GPU's Audio and Video (and any other GPU component) is in the same group, and isolated, since you can only pass a full group. If there are other things in there, or if your second GPU is also in there, you'll have to perfrom the ACS Override Patch.
+
+#### 1.3 (optional): ACS Override Patch
+If your IOMMU groups aren't valid, then you'll have to perform the ACS Override Patch. There's 2 ways to do it, and you can do whichever one you choose. You can choose to a, Patch the Kernel yourself, which Bryan Steiner also covers, or b) install a different Kernel, notably the Zen Kernel or the linux-vfio Kernel, which have the ACS Override Patch built in, and you just need to specify which devices. 
+
+##### 1.3.1: Installing a different kernel
+This process is very straightforward. All you have to do is type `sudo pacman -S linux-vfio` for the VFIO Kernel or Arch systems, or `sudo apt install linux-vfio` for Debian based systems. 
