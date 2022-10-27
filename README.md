@@ -9,9 +9,9 @@ Though in this guide i'll be using Libvirt hooks, like the greeting mentions, th
 ### Intro
 So, why all of this? Well, that's for you to decide. For me it was moving my workflow off of windows for the sake of privacy, stability, and reliability, while still retaining the ability to play certain games. And you might be asking "Why not use Wine, or play natively?" and the answer is that sometimes, its easier to run the vm then jumping through hoops applying patches and using Wine, or the fact that certain anticheats only support windows and not even Proton. With that out of the way, before i get started on the guide, Let's layout some details.
 
-1: This guide focuses on Manjaro, and certain things will only apply to Arch and Manjaro. I'll try to leave Debian commands as well, but i won't be supportting distros like RHEL, Fedora, and Gentoo. Certain steps will also only apply to Arch, and I'll point those out when i get to them
+1: This guide focuses on Manjaro, and certain things will only apply to Arch and Manjaro. I'll try to leave Debian commands as well, but i won't be supporting distros like RHEL, Fedora, and Gentoo. Certain steps will also only apply to Arch, and I'll point those out when i get to them
 
-2: Since this is both my first guide, and a beginner-friendly tutorial, i'll leave out more advanced topics like CPU Pinning and Disk Tuning
+2: Since this is both my first guide, and a beginner-friendly tutorial, i'll leave out more advanced topics like CPU Pinning and Disk Tuning from [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial)
 
 3: This guide is based off of some other guides linked at the bottom, but it also has my own hardware in mind so your results may vary. You can take a look at my own hardware as a pointer to see if it might work, but this is a very loose reference and should work in most cases regardless.
 
@@ -69,7 +69,7 @@ So, in order to allow the Kernel to access IOMMU on Systemd Boot distros, all yo
 With that, we're done enabling IOMMU! Time for the next step.
 
 #### 1.2: Verifying IOMMU Groups
-In order to verify it wotked, the first thing you're going to do it put in this command: `sudo dmesg | grep VT-d` for Intel, and `sudo dmesg | grep AMD-Vi` for AMD. If you were successful, you should see something similar to this for AMD CPUs
+In order to verify it worked, the first thing you're going to do it put in this command: `sudo dmesg | grep VT-d` for Intel, and `sudo dmesg | grep AMD-Vi` for AMD. If you were successful, you should see something similar to this for AMD CPUs
 ```
 [    0.292288] pci 0000:00:00.2: AMD-Vi: IOMMU performance counters supported
 [    0.292888] pci 0000:00:00.2: AMD-Vi: Found IOMMU cap 0x40
