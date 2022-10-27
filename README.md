@@ -63,12 +63,15 @@ In order to enable IOMMU,  you need to edit the Grub settings file. To do that, 
 Now, where it says `GRUB_CMDLINE_LINUX_DEFAULT="quiet udev.log_priority=3"`(this line might look different depending on your distro), you're going to remove `quiet` (to make debugging your boot a little easier + it looks cooler), and add the command for your CPU's IOMMU, as well as `iommu=pt`. So in my case, since I have an AMD CPU, mine would look like this: `GRUB_CMDLINE_LINUX_DEFAULT="udev.log_priority=3 iommu=pt amd_iommu=on"`. Then, just save and quit. For `nano`, that's Ctrl+O, Enter, and Ctrl+X. So all well and good. Now, to apply these changes, we'll have to regenerate the Grub configuration file. This is super easy, and is universal across any distro that uses Grub. just type `sudo grub-mkconfig -o /boot/grub/grub.cfg` into a terminal, and you're good to go.
 
 ##### 1.1.2: Enabling IOMMU for Systemd Boot
-For Systemd Boot you can use a tool that comes preinstalled with Pop!\_OS called kernelstub. You can also install it on other distros.
-So, in order to allow the Kernel to access IOMMU on Systemd Boot distros, all you have to do is put in the following commands: `sudo kernelstub --add-options "intel_iommu=on" && sudo kernelstub --add-options "iommu=pt"` for Intel CPUs, or `sudo kernelstub --add-options "amd_iommu=on" && sudo kernelstub --add-options "iommu=pt"` for AMD CPUs.
+For Systemd Boot you can use a tool that comes preinstalled with Pop!\_OS called kernelstub. You can also install it on other distros. Unfortunately, it doesn't seem like any Manjaro repositories or even the AUR has `kernelstub`, but Debian based distros should be install it using `sudo apt install kernelstub`. So, in order to allow the Kernel to access IOMMU on Systemd Boot distros, all you have to do is put in the following commands: `sudo kernelstub --add-options "intel_iommu=on" && sudo kernelstub --add-options "iommu=pt"` for Intel CPUs, or `sudo kernelstub --add-options "amd_iommu=on" && sudo kernelstub --add-options "iommu=pt"` for AMD CPUs.
 
 With that, we're done enabling IOMMU! Time for the next step.
 
-#### 1.2: Verifying IOMMU Groups
+#### 1.2: Making Sure IOMMU is Enabled Properly
+If you did all those steps correctly, then you should be able to move on to this step, to ensure your IOMMU groups have been configured properly.
+
+##### 1.2.1: Checking if IOMMU is Enabled at All
+
 In order to verify it worked, the first thing you're going to do it put in this command: `sudo dmesg | grep VT-d` for Intel, and `sudo dmesg | grep AMD-Vi` for AMD. If you were successful, you should see something similar to this for AMD CPUs
 ```
 [    0.292288] pci 0000:00:00.2: AMD-Vi: IOMMU performance counters supported
@@ -77,3 +80,19 @@ In order to verify it worked, the first thing you're going to do it put in this 
 [    0.613744] AMD-Vi: AMD IOMMUv2 loaded and initialized
 ```
 
+##### 1.2.2: Checking if IOMMU Groups are Valid
+So what you wanna do here, is run the script provided in the repo, or you can make the script yourself. If you wanna make the script yourself, i recommend placing it in a seperate `vfio` directory within your Home directory. Assuming you've done that, past this glob of code into it, and then run it.
+
+```
+#!/bin/bash
+for d in /sys/kernel/iommu_groups/*/devices/*; do
+  n=${d#*/iommu_groups/*}; n=${n%%/*}
+  printf 'IOMMU Group %s ' "$n"
+  lspci -nns "${d##*/}"
+done
+```
+
+once run, it should give an output similar to this (ids and names may look different or your system)
+```
+
+```
