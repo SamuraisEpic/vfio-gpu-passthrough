@@ -21,7 +21,7 @@ CPU | AMD Ryzen 5 5600G
 GPU | ASUS NVIDIA Geforce RTX 2060 12GB
 RAM | 16GB G.SKILL Aegis DDR4 3000 with XMP
 Motherboard | ASUS Prime B550 Plus
-BIOS Version | 2403
+BIOS Version | 2803
 Software | Manjaro Linux 21.3.7
 Kernel | 5.17.13-1-VFIO-MANJARO
 QEMU Version | QEMU emulator version 7.1.0
@@ -40,7 +40,7 @@ So, without further ado, lets get started!
 ##### **\*\*Note for 1.3: This setting might not apply at all to your board, or only one of the two options may apply**
 
 ##### 1.0.1: Virtualisation
-The first thing you'll want to enable in the BIOS is Virtualisation. For my board, or generally and ASUS PRIME board, this can be found under the `Advanced` tab in `CPU Configuration`
+The first thing you'll want to enable in the BIOS is Virtualisation. For my board, or generally any ASUS PRIME AM4 board, this can be found under the `Advanced` tab in `CPU Configuration`
 ![CPU Options](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/CPU-options.png?raw=true)
 Within here, you're gonna wanna look for `SVM Mode` or `SVM`, and make sure it's set to *enabled*![SVM Mode](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/SVM.png?raw=true)
 
