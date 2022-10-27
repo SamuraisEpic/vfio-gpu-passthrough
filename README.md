@@ -48,6 +48,10 @@ Within here, you're gonna wanna look for `SVM Mode` or `SVM`, and make sure it's
 Now, before you can do anything in [1.1](https://github.com/SamuraisEpic/vfio-gpu-passthrough#11-enabling-iommu), you have to do this. ***This option is crucial to the rest of the guide since it all depends on IOMMU*** With that out of the way, this is how to enable IOMMU on ASUS PRIME AM4 boards. Under the `Advanced` tab again, look for `AMD CBS`, or something similar it should be near the bottom, so scroll down if necessary. ![AMD CBS](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/CBS-options.png?raw=true) Within this menu, look for `IOMMU`, and make sure it's set to `Enabled`. ***This is important. make sure this is enabled, because the rest of the guide depends on this being on*** ![IOMMU on](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/IOMMU.png?raw=true).
 
 ##### 1.0.3: Enabling the iGP and Making it the Primary Video Output ([see warning](https://github.com/SamuraisEpic/vfio-gpu-passthrough#note-for-13-this-setting-might-not-apply-at-all-to-your-board-or-only-one-of-the-two-options-may-apply))
+So in order to enable these things yo wanna go back to the advanced tab, and go to `NB Configuration` ![NB configuration](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/NB-config.png?raw=true)
+Within this menu, make sure `IGFX Multi-Monitor` is set to `Enabled`, and `Primary Video Device` is set to `IGFX Video`, like in the image below. ![iGP options](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/BIOS%20Images/make-iGP-primary.png?raw=true)
+
+With that done, the BIOS settings should all be good, and you should be ready to move on to 1.1!
 
 
 #### 1.1: Enabling IOMMU within Linux
