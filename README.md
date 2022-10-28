@@ -112,6 +112,6 @@ And that should do it for the ACS Override Patch. Still with me so far? Good. Ne
 Getting ISOs is easy, and is basically the last step before we start doing the cool things. 
 i'll link the 2 ISO's you need, so its nice and easy to get them and continue on. I'll also provide a little explanation for those that need it.
 
-The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/software-download/windows10ISO) (windows 11 sucks) - How are you going to install windows in your VM without an ISO? Alternatively, you can get ISO "build files" for any modern version of Windows from [UUPdump](https://uupdump.net) If you choose to get a "custom" ISO, i recommend version 22000.1, with a few tweaks.
+The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/software-download/windows10ISO) (windows 11 sucks) - How are you going to install windows in your VM without an ISO? Alternatively, you can get ISO "build files" for any modern version of Windows from [UUPdump](https://uupdump.net). If you choose to get a "custom" ISO, i recommend version 22000.1, with a few tweaks.
 
 Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are availble in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
