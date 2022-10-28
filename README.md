@@ -4,10 +4,10 @@
 Thanks for checking out this guide. If you use Linux and have have 2 GPUs (integrated graphics count too!), and plan to make for example a Gaming VM with windows on it to pass a card to, this guide will help you get started.
 
 ### Disclaimer
-Though in this guide i'll be using Libvirt hooks, like the greeting mentions, this guide is best if you have 2 GPUs instead of just one. Though even just a single GPU will work fine (given some things are modified), i *still* recommend 2. Even your CPU's integrated graphics processor (hereby referred to as the "iGP") will do just fine.
+Though in this guide I'll be using Libvirt hooks, like the greeting mentions, this guide is best if you have 2 GPUs instead of just one. Though even just a single GPU will work fine (given some things are modified), i *still* recommend 2. Even your CPU's integrated graphics processor (hereby referred to as the "iGP") will do just fine.
 
 ### Intro
-So, why all of this? Well, that's for you to decide. For me it was moving my workflow off of windows for the sake of privacy, stability, and reliability, while still retaining the ability to play certain games. And you might be asking "Why not use Wine, or play natively?" and the answer is that sometimes, its easier to run the vm then jumping through hoops applying patches and using Wine, or the fact that certain anticheats only support windows and not even Proton. With that out of the way, before i get started on the guide, Let's layout some details.
+So, why all of this? Well, that's for you to decide. For me it was moving my workflow off of windows for the sake of privacy, stability, and reliability, while still retaining the ability to play certain games. And you might be asking "Why not use Wine, or play natively?" and the answer is that sometimes, its easier to run the VM then jumping through hoops applying patches and using Wine, or the fact that certain anticheats only support windows and not even Proton. With that out of the way, before i get started on the guide, Let's layout some details.
 
 1: This guide focuses on Manjaro, and certain things will only apply to Arch and Manjaro. I'll try to leave Debian commands as well, but i won't be supporting distros like RHEL, Fedora, and Gentoo. Certain steps will also only apply to Arch, and I'll point those out when i get to them
 
@@ -53,13 +53,15 @@ Within this menu, make sure `IGFX Multi-Monitor` is set to `Enabled`, and `Prima
 
 With that done, the BIOS settings should all be good, and you should be ready to move on to 1.1!
 
-#### Prerequisite to 1.1: Installing required packages and dependencies
+#### Prerequisite to 1.1: Installing Required Packages and Dependencies
+
+Before we can get started, we need to install 
 
 #### 1.1: Enabling IOMMU within Linux
-This step is mostly the same in every guide. I'll be using Grub, so i'll provide the instructions for Grub, but also for Systemd Boot. The general parameter you're gonna wanna add is `intel_iommu=on` for an Intel CPU, or `amd_iommu=on` for AMD, as well as `iommu=pt` for both manufacturers, and this will apply to both Grub, and Systemd. **\*\*note: I've read in certain guides that assuming IOMMU is enabled in BIOS, The Linux Kernel will automatically enable it on AMD systems. I'm not 100% sure of this so I've added the correct parameter to my own setup just in case. i advise you do the same.**
+This step is mostly the same in every guide. I'll be using Grub, so I'll provide the instructions for Grub, but also for Systemd Boot. The general parameter you're gonna wanna add is `intel_iommu=on` for an Intel CPU, or `amd_iommu=on` for AMD, as well as `iommu=pt` for both manufacturers, and this will apply to both Grub, and Systemd. **\*\*note: I've read in certain guides that assuming IOMMU is enabled in BIOS, The Linux Kernel will automatically enable it on AMD systems. I'm not 100% sure of this so I've added the correct parameter to my own setup just in case. i advise you do the same.**
 
 ##### 1.1.1: Enabling IOMMU for Grub
-In order to enable IOMMU,  you need to edit the Grub settings file. To do that, you can use any text editor you want, but I'll be using `nano`. To open the file you can use root directly, but i'll be using `sudo`. In my case i'll type in `sudo nano /etc/default/grub`. once that's done, you should get a screen like this: ![my grub settings file](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/grub-config-original.png?raw=true)
+In order to enable IOMMU,  you need to edit the Grub settings file. To do that, you can use any text editor you want, but I'll be using `nano`. To open the file you can use root directly, but i'll be using `sudo`. In my case I'll type in `sudo nano /etc/default/grub`. once that's done, you should get a screen like this: ![my grub settings file](https://github.com/SamuraisEpic/vfio-gpu-passthrough/blob/main/images/grub-config-original.png?raw=true)
 
 Now, where it says `GRUB_CMDLINE_LINUX_DEFAULT="quiet udev.log_priority=3"`(this line might look different depending on your distro), you're going to remove `quiet` (to make debugging your boot a little easier + it looks cooler), and add the command for your CPU's IOMMU, as well as `iommu=pt`. So in my case, since I have an AMD CPU, mine would look like this: `GRUB_CMDLINE_LINUX_DEFAULT="udev.log_priority=3 iommu=pt amd_iommu=on"`. Then, just save and quit. For `nano`, that's Ctrl+O, Enter, and Ctrl+X. So all well and good. Now, to apply these changes, we'll have to regenerate the Grub configuration file. This is super easy, and is universal across any distro that uses Grub. just type `sudo grub-mkconfig -o /boot/grub/grub.cfg` into a terminal, and you're good to go.
 
@@ -81,7 +83,7 @@ In order to verify it worked, the first thing you're going to do it put in this 
 ```
 
 ##### 1.2.2: Checking if IOMMU Groups are Valid
-So what you wanna do here, is run the script provided in the repo, or you can make the script yourself. If you wanna make the script yourself, i recommend placing it in a seperate `vfio` directory within your Home directory. Assuming you've done that, paste this glob of code into it, and then run it.
+So what you wanna do here, is run the script provided in the repo, or you can make the script yourself. If you wanna make the script yourself, i recommend placing it in a separate `vfio` directory within your Home directory. Assuming you've done that, paste this glob of code into it, and then run it.
 ```
 #!/bin/bash
 for d in /sys/kernel/iommu_groups/*/devices/*; do
@@ -96,24 +98,24 @@ once run, it should give an output similar to this (ids and names may look diffe
 
 ```
 
-Now, the biggest thing to look for here, is that your GPU's Audio and Video (and any other GPU component) is in the same group, and isolated, since you can only pass a full group. If there are other things in there, or if your second GPU is also in there, you'll have to perfrom the ACS Override Patch to ensure your GPU is in its own isolated group.
+Now, the biggest thing to look for here, is that your GPU's Audio and Video (and any other GPU component) is in the same group, and isolated, since you can only pass a full group. If there are other things in there, or if your second GPU is also in there, you'll have to perform the ACS Override Patch to ensure your GPU is in its own isolated group.
 
 #### 1.3 (optional): ACS Override Patch
 If your IOMMU groups aren't valid, then you'll have to perform the ACS Override Patch. There's 2 ways to do it, and you can do whichever one you choose. You can choose to a, Patch the Kernel yourself, which Bryan Steiner also covers, or b) install a different Kernel, notably the Zen Kernel or the linux-vfio Kernel, which have the ACS Override Patch built in, and you just need to specify `pcie_acs_override=downstream` in the boot parameters to ensure the Kernel loads it
 
 ##### 1.3.1: Installing a different kernel -- Arch
-This process is very straightforward. All you have to do is type `sudo pacman -S linux-vfio` for the VFIO Kernel or Arch systems, or `sudo apt install linux-vfio` for Debian based systems. Likewise, for the Zen Kernel, just replace `linux-vfio`, with `linux-zen`. After intalling one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
+This process is very straightforward. All you have to do is type `sudo pacman -S linux-vfio` for the VFIO Kernel or Arch systems, or `sudo apt install linux-vfio` for Debian based systems. Likewise, for the Zen Kernel, just replace `linux-vfio`, with `linux-zen`. After installing one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
 ![grub settings with ACS Override Patch](image not here yet)
 
 ##### 1.3.2: Patching your Kernel Yourself -- Debian
-Now since I'm not especially well versed in this area, i've linked [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial/#----acs-override-patch-optional), which *does* go over this process. This should get you almost all the way through, minus passing it as a param if you use Grub. For that look at [1.3.1](github.com/SamuraisEpic/vfio-gpu-passthrough#1.3.1:-installing-a-different-kernel) For systemd boot on Debian based systems, Bryan Steiner's guide covers that part with `kernelstub`. - *note that he does it for Debian based systems. if you're on Arch, i recommend installing a different kernel. instructions for that are linked in [1.3.1](https://github.com/SamuraisEpic/vfio-gpu-passthrough#131-installing-a-different-kernel)
+Now since I'm not especially well versed in this area, I've linked [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial/#----acs-override-patch-optional), which *does* go over this process. This should get you almost all the way through, minus passing it as a param if you use Grub. For that look at [1.3.1](github.com/SamuraisEpic/vfio-gpu-passthrough#1.3.1:-installing-a-different-kernel) For systemd boot on Debian based systems, Bryan Steiner's guide covers that part with `kernelstub`. - *note that he does it for Debian based systems. if you're on Arch, i recommend installing a different kernel. instructions for that are linked in [1.3.1](https://github.com/SamuraisEpic/vfio-gpu-passthrough#131-installing-a-different-kernel)
 
 And that should do it for the ACS Override Patch. Still with me so far? Good. Next, we'll look at getting some ISOs.
 
 #### 1.4: Getting ISOs
 Getting ISOs is easy, and is basically the last step before we start doing the cool things. 
-i'll link the 2 ISO's you need, so its nice and easy to get them and continue on. I'll also provide a little explanation for those that need it.
+I'll link the 2 ISO's you need, so its nice and easy to get them and continue on. I'll also provide a little explanation for those that need it.
 
 The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/software-download/windows10ISO) (windows 11 sucks) - How are you going to install windows in your VM without an ISO? Alternatively, you can get ISO "build files" for any modern version of Windows from [UUPdump](https://uupdump.net). If you choose to get a "custom" ISO, i recommend version 22000.1, with a few tweaks.
 
-Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are availble in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
+Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are available in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
