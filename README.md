@@ -110,3 +110,4 @@ And that should do it for the ACS Override Patch. Still with me so far? Good. Ne
 
 #### 1.4: Getting ISOs
 Getting ISOs is easy, and is basically the last step before we start doing the cool things. 
+i'll link the 2 ISO's you nees, so its nice and easy to 
