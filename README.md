@@ -99,15 +99,19 @@ Now, the biggest thing to look for here, is that your GPU's Audio and Video (and
 #### 1.3 (optional): ACS Override Patch
 If your IOMMU groups aren't valid, then you'll have to perform the ACS Override Patch. There's 2 ways to do it, and you can do whichever one you choose. You can choose to a, Patch the Kernel yourself, which Bryan Steiner also covers, or b) install a different Kernel, notably the Zen Kernel or the linux-vfio Kernel, which have the ACS Override Patch built in, and you just need to specify `pcie_acs_override=downstream` in the boot parameters to ensure the Kernel loads it
 
-##### 1.3.1: Installing a different kernel
+##### 1.3.1: Installing a different kernel -- Arch
 This process is very straightforward. All you have to do is type `sudo pacman -S linux-vfio` for the VFIO Kernel or Arch systems, or `sudo apt install linux-vfio` for Debian based systems. Likewise, for the Zen Kernel, just replace `linux-vfio`, with `linux-zen`. After intalling one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
 ![grub settings with ACS Override Patch](image not here yet)
 
-##### 1.3.2: Patching your Kernel Yourself
-Now since I'm not especially well versed in this area, i've linked [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial/#----acs-override-patch-optional), which *does* go over this process. This should get you almost all the way through, minus passing it as a param if you use Grub. For that look at [1.3.1](github.com/SamuraisEpic/vfio-gpu-passthrough#1.3.1:-installing-a-different-kernel) For systemd boot on Debian based systems, Bryan Steiner's guide covers that part with `kernelstub`.
+##### 1.3.2: Patching your Kernel Yourself -- Debian
+Now since I'm not especially well versed in this area, i've linked [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial/#----acs-override-patch-optional), which *does* go over this process. This should get you almost all the way through, minus passing it as a param if you use Grub. For that look at [1.3.1](github.com/SamuraisEpic/vfio-gpu-passthrough#1.3.1:-installing-a-different-kernel) For systemd boot on Debian based systems, Bryan Steiner's guide covers that part with `kernelstub`. - *note that he does it for Debian based systems. if you're on Arch, i recommend installing a different kernel linked in [1.3.1](https://github.com/SamuraisEpic/vfio-gpu-passthrough#131-installing-a-different-kernel)
 
 And that should do it for the ACS Override Patch. Still with me so far? Good. Next, we'll look at getting some ISOs.
 
 #### 1.4: Getting ISOs
 Getting ISOs is easy, and is basically the last step before we start doing the cool things. 
-i'll link the 2 ISO's you nees, so its nice and easy to 
+i'll link the 2 ISO's you need, so its nice and easy to get them and continue on. I'll also provide a little explanation for those that need it.
+
+The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/software-download/windows10ISO) (windows 11 sucks) - How are you going to install windows in your VM without an ISO? Alternatively, you can get ISO "build files" for any modern version of Windows from [UUPdump](https://uupdump.net) If you choose to get a "custom" ISO, i recommend version 22000.1, with a few tweaks.
+
+Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are availble in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
