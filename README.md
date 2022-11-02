@@ -61,8 +61,8 @@ So we wanna install a few things.
  - `virt-manager` to create and manage the VM,
  - `cockpit` and it's dependencies to manage the VM after it's been setup properly
  - `edk2-ovmf` for the UEFI VM firmware, since Legacy BIOS doesn't support passthrough PCI
- - `qemu-full` which will run the VM and allow for KVM
- - `libvirt` which will maanage hooks and devices, backend for virt-manager
+ - `qemu-full` KVM
+ - `libvirt` which will manage hooks and devices, backend for virt-manager, and the virtualisation api we'll be using
 
 #### 1.1: Enabling IOMMU within Linux
 This step is mostly the same in every guide. I'll be using Grub, so I'll provide the instructions for Grub, but also for Systemd Boot. The general parameter you're gonna wanna add is `intel_iommu=on` for an Intel CPU, or `amd_iommu=on` for AMD, as well as `iommu=pt` for both manufacturers, and this will apply to both Grub, and Systemd. **\*\*note: I've read in certain guides that assuming IOMMU is enabled in BIOS, The Linux Kernel will automatically enable it on AMD systems. I'm not 100% sure of this so I've added the correct parameter to my own setup just in case. i advise you do the same.**
