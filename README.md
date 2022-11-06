@@ -132,7 +132,16 @@ IOMMU Group 9 08:00.0 Ethernet controller [0200]: Realtek Semiconductor Co., Ltd
 
 ```
 
-Now, the biggest thing to look for here, is that your GPU's Audio and Video (and any other GPU component) is in the same group, and isolated, since you can only pass a full group. If there are other things in there, or if your second GPU is also in there, you'll have to perform the ACS Override Patch to ensure your GPU is in its own isolated group.
+Now, the biggest thing to look for here, is that your GPU's Audio and Video (and any other GPU component) is in the same group, and isolated, since you can only pass a full group.
+
+Since my GPU's group looks like this, i'm good.
+```
+01:00.0 VGA compatible controller [0300]: NVIDIA Corporation TU106 [GeForce RTX 2060 12GB] [10de:1f03] (rev a1)
+01:00.1 Audio device [0403]: NVIDIA Corporation TU106 High Definition Audio Controller [10de:10f9] (rev a1)
+```
+What you want to look for here, is the first number, in my case the `01` to be that same, and for that to only have one card in it. for example, a `01:00.0 NVIDIA Video, and 01:00.1 NVIDIA Video` is good, but `01:00.1 NVIDIA Video, 01:00.2 NVIDIA Audio, 01:00.3 Second Video Component, 01:00.4 Second Audio Component` is bad.
+
+ If there are other things in there, or if your second GPU is also in there, like the second one, you'll have to perform the ACS Override Patch to ensure your GPU is in its own isolated group.
 
 #### 1.3 (optional): ACS Override Patch
 If your IOMMU groups aren't valid, then you'll have to perform the ACS Override Patch. There's 2 ways to do it, and you can do whichever one you choose. You can choose to a, Patch the Kernel yourself, which Bryan Steiner also covers, or b) install a different Kernel, notably the Zen Kernel or the linux-vfio Kernel, which have the ACS Override Patch built in, and you just need to specify `pcie_acs_override=downstream` in the boot parameters to ensure the Kernel loads it
