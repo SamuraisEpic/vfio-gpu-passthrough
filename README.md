@@ -54,12 +54,12 @@ Within this menu, make sure `IGFX Multi-Monitor` is set to `Enabled`, and `Prima
 With that done, the BIOS settings should all be good, and you should be ready to move on to 1.1!
 
 #### Prerequisite to 1.1: Installing Required Packages and Dependencies
-Before we can get started, we need to install some packages and dependencies. 1, for Arch based distros you'll need an AUR helper. I recommend `pacaur`. Another option is `yay`. You can get `yay` from the official repos by sending `sudo pacman -Syu yay`. If you prefer `pacaur`, you can build it from the AUR. for the puropse of this guide, i'll be using `yay` for Arch based distros.
+Before we can get started, we need to install some packages and dependencies. 1, for Arch based distros you'll need an AUR helper. I recommend `pacaur`. Another option is `yay`. You can get `yay` from the official mnajaro repos by sending `sudo pacman -Syu yay` to a terminal. If you prefer `pacaur`, you can build it from the AUR. for the puropse of this guide, i'll be using `yay` for Arch based distros. If you prefer a gui approach, i recommend `octopi`.
 
 ##### Installing Things for Arch
 So we wanna install a few things. 
  - `virt-manager` to create and manage the VM,
- - `cockpit` and it's dependencies to manage the VM after it's been setup properly
+ - `cockpit`, and `cockpit-machines` to manage the VM directly, or remotely over LAN when you're away using something like ZeroTier after it's been setup properly
  - `edk2-ovmf` for the UEFI VM firmware, since Legacy BIOS doesn't support passthrough PCI
  - `qemu-full` KVM
  - `libvirt` which will manage hooks and devices, backend for virt-manager, and the virtualisation api we'll be using
@@ -169,3 +169,4 @@ I'll link the 2 ISO's you need, so its nice and easy to get them and continue on
 The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/software-download/windows10ISO) (windows 11 sucks) - How are you going to install windows in your VM without an ISO? Alternatively, you can get ISO "build files" for any modern version of Windows from [UUPdump](https://uupdump.net). If you choose to get a "custom" ISO, i recommend version 22000.1, with a few tweaks.
 
 Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are available in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
+
