@@ -183,7 +183,7 @@ What you want to look for here, is the first number, in my case the `01` to be t
 If your IOMMU groups aren't valid, then you'll have to perform the ACS Override Patch. There's 2 ways to do it, and you can do whichever one you choose. You can choose to a, Patch the Kernel yourself, which Bryan Steiner also covers, or b) install a different Kernel, notably the Zen Kernel or the linux-vfio Kernel, which have the ACS Override Patch built in, and you just need to specify `pcie_acs_override=downstream` in the boot parameters to ensure the Kernel loads it
 
 ##### 1.3.1: Installing a different kernel -- Arch
-This process is very straightforward. All you have to do is type `pacaur -S linux-vfio` for the VFIO Kernel on Arch systems. On Manjaro, its `sudo pacman -S linux-vfio-manjaro`. **Make sure you use `linux-vfio-manjaro` on a Manjaro ayatem. i wasn't able to compile the normal kernel on my PC.(haha 4.5GHz w stock cooling go brr)** For the Zen Kernel, just replace `linux-vfio`, with `linux-zen` on Arch based systems. On Manjaro, look it up in the `Add/Remove Software` Utility. After installing one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
+This process is very straightforward. All you have to do is type `pacaur -S linux-vfio` for the VFIO Kernel on Arch systems. On Manjaro, its `sudo pacman -S linux-vfio-manjaro`. **Make sure you use `linux-vfio-manjaro` on a Manjaro ayatem. i wasn't able to compile the normal kernel on my PC. it ended up crashing. (haha 4.5GHz w stock cooling go brr)** For the Zen Kernel, just replace `linux-vfio`, with `linux-zen` on Arch based systems. On Manjaro, look it up in the `Add/Remove Software` Utility. After installing one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
 ![grub settings with ACS Override Patch](image not here yet)
 
 ##### 1.3.2: Patching your Kernel Yourself -- Debian
@@ -200,3 +200,10 @@ The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/sof
 Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are available in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
 
 ### 2.0: Configuring Libvirt
+So you finally made it past section 1! In this section we're gonna configure Libvirt to dynamically unbind and rebind the GPU from, and to the host. There are a number of reasons to do this. the first, is flexibility. if you're doing for example some compute work on the host, you can do that. Another reason would be hardware restraints, for example if you only have one GPU and/or no iGP (which is totally alright!)
+ 
+ ##### Note for Single GPU users (no iGP)
+While Libvirt hooks will allow for single GPU passthrough, there are some caveats. notable, 
+1. You won't be able to access the host via gui while using the VM (ssh should still work)
+2. You can only use one system at a time so if you want to say, stream from Linux, that's not going to be an option.
+3. NVIDIA drivers are hit or miss with this. for me, it didn't work well until i force unbound the driver.
