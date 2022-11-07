@@ -8,7 +8,7 @@ mkdir build && cd build
 cmake ..
 make
 echo "please enter the sudo password to copy scream to /bin to allow to to be executed from anywhere."
-cp scream /bin/
+sudo cp scream /bin/
 cd ..
 cd ..
 cd ..
