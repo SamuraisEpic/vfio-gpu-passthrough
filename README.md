@@ -88,7 +88,7 @@ mostly the same stuff, but with different names.
  - `cockpit`
  - `cockpit-machines`
  - `libpulse-dev` prerequisite to scream.
- - **`scream` must be compiled locally. if you're not familiar with this process, you can use the automated script utility to do it automatically. if you don't trust me, you can read the contents of the script using a text editor, or `cat`. see [this note](https://github.com/SamuraisEpic/vfio-gpu-passthrough#note-for-autocompile-scripts-ill-be-asking-sudo-privileges-for-running-these-scripts-this-is-only-to-make-and-remove-the-source-code-directories-i-wont-use-them-for-any-malicious-purpose-if-you-dont-trust-me-open-the-scripts-in-an-editor-or-check-the-contents-using-cat-alternatively-you-can-compile-the-packages-yourself) for more info on autocompile scripts.
+ - **`scream` must be compiled locally. if you're not familiar with this process, you can use the automated script utility to do it automatically. if you don't trust me, you can read the contents of the script using a text editor, or use `cat`. see [this note](https://github.com/SamuraisEpic/vfio-gpu-passthrough#note-for-autocompile-scripts-ill-be-asking-sudo-privileges-for-running-these-scripts-this-is-only-to-make-and-remove-the-source-code-directories-i-wont-use-them-for-any-malicious-purpose-if-you-dont-trust-me-open-the-scripts-in-an-editor-or-check-the-contents-using-cat-alternatively-you-can-compile-the-packages-yourself) for more info on autocompile scripts.
  - **parsec (optional) must be downloaded via deb package. from what i know they don't offer a cli install on debian based systems**
 
  make it a one liner with `sudo apt install ebtables dnsmasq virt-manager looking-glass-client libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils ovmf cockpit cockpit-machines libpulse-dev -y` make sure your system and package lists are up to date before running this command. i don't think you can make that part of the install command like with `pacman`.
@@ -199,3 +199,4 @@ The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/sof
 
 Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are available in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
 
+### 2.0: Configuring Libvirt
