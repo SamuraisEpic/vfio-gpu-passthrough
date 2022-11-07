@@ -199,7 +199,7 @@ The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/sof
 
 Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are available in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
 
-### 2.0: Configuring Libvirt
+### 2: Configuring Libvirt
 So you finally made it past section 1! In this section we're gonna configure Libvirt to dynamically unbind and rebind the GPU from, and to the host. There are a number of reasons to do this. the first, is flexibility. if you're doing for example some compute work on the host, you can do that. Another reason would be hardware restraints, for example if you only have one GPU and/or no iGP (which is totally alright!)
  
  ##### Note for Single GPU users (no iGP)
@@ -207,3 +207,9 @@ While Libvirt hooks will allow for single GPU passthrough, there are some caveat
 1. You won't be able to access the host via gui while using the VM (ssh should still work)
 2. You can only use one system at a time so if you want to say, stream from Linux, that's not going to be an option.
 3. NVIDIA drivers are hit or miss with this. for me, it didn't work well until i force unbound the driver.
+
+##### Note for NVDIA GPU users with a second GPU
+If ryou plan to passthrough the NVIDIA card, then make sure there's no driver assigned to it because it will screw shit up and mess up everything. if you end up keeping the driver, then refer the process used for Single GPU Passthrough later on.
+
+#### 2.1: Getting the Libvirt Hooks Helper
+This process is fairly easy, and so there's no sub sections. First, make the directory that the hooks will go in with `sudo mkdir -p /etc/libvirt/hooks`.
