@@ -88,7 +88,7 @@ mostly the same stuff, but with different names.
  - `cockpit`
  - `cockpit-machines`
  - `libpulse-dev` prerequisite to scream.
- - **`scream` must be compiled locally. if you're not familiar with this process, you can use the automated script utility to do it automatically. if you don't trust me, you can read the contents of the script using a text editor, or `cat`. see [this note](note) for more info on autocompile scripts.
+ - **`scream` must be compiled locally. if you're not familiar with this process, you can use the automated script utility to do it automatically. if you don't trust me, you can read the contents of the script using a text editor, or `cat`. see [this note](https://github.com/SamuraisEpic/vfio-gpu-passthrough#note-for-autocompile-scripts-ill-be-asking-sudo-privileges-for-running-these-scripts-this-is-only-to-make-and-remove-the-source-code-directories-i-wont-use-them-for-any-malicious-purpose-if-you-dont-trust-me-open-the-scripts-in-an-editor-or-check-the-contents-using-cat-alternatively-you-can-compile-the-packages-yourself) for more info on autocompile scripts.
  - **parsec (optional) must be downloaded via deb package. from what i know they don't offer a cli install on debian based systems**
 
 #### 1.1: Enabling IOMMU within Linux
