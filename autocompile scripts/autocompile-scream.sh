@@ -7,6 +7,7 @@ cd unix
 mkdir build && cd build
 cmake ..
 make
+cp scream /bin/
 cd ..
 cd ..
 cd ..
