@@ -4,7 +4,7 @@
 Thanks for checking out this guide. If you use Linux and have have 2 GPUs (integrated graphics count too!), and plan to make for example a Gaming VM with windows on it to pass a card to, this guide will help you get started.
 
 ### Disclaimer
-Though in this guide I'll be using Libvirt hooks, like the greeting mentions, this guide is best if you have 2 GPUs instead of just one. Though even just a single GPU will work fine (given some things are modified), i *still* recommend 2. Even your CPU's integrated graphics processor (hereby referred to as the "iGP") will do just fine.
+Though in this guide I'll be using Libvirt hooks, like the greeting mentions, this guide is best if you have 2 GPUs instead of just one. Though even just a single GPU will work fine (given some things are modified), i *still* recommend 2. Even your CPU's integrated graphics processor (hereby referred to as the "iGP") will do just fine. - I recommend 2 proper dedicated GPUs if you plan to do any gaming on the host - one (ideally AMD one) for the host, and another (ideally NVIDIA one) for the guest.
 
 ### Intro
 So, why all of this? Well, that's for you to decide. For me it was moving my workflow off of windows for the sake of privacy, stability, and reliability, while still retaining the ability to play certain games. And you might be asking "Why not use Wine, or play natively?" and the answer is that sometimes, its easier to run the VM then jumping through hoops applying patches and using Wine, or the fact that certain anticheats only support windows and not even Proton. With that out of the way, before i get started on the guide, Let's layout some details.
@@ -56,7 +56,7 @@ With that done, the BIOS settings should all be good, and you should be ready to
 #### Prerequisite to 1.1: Installing Required Packages and Dependencies
 Before we can get started, we need to install some packages and dependencies. 1, for Arch based distros you'll need an AUR helper. I recommend `pacaur`. Another option is `yay`. You can get `yay` from the official mnajaro repos by sending `sudo pacman -Syu yay` to a terminal. If you prefer `pacaur`, you can build it from the AUR. for the puropse of this guide, i'll be using `yay` for Arch based distros. If you prefer a gui approach, i recommend `octopi`. If none of these are in the official repos of your distro, i've provided a `pacaur` build script so you can use `pacaur`.
 
-#### **Note for autocompile scripts: I'll be asking `sudo` privileges for running these scripts. this is only to make and remove the source code directories. i won't use them for any malicious purpose. if you don't trust me, open the scripts in an editor or check the contents using `cat`. alternatively, you can compile the packages yourself.**
+#### **\*\*Note for autocompile scripts: I'll be asking `sudo` privileges for running one of these scripts to add the scream binary to `/bin`. if you don't trust me, you can open the scripts in an editor or check the contents using `cat`. alternatively, you can compile the packages yourself.**
 
 ##### Installing Things for Arch
 So we wanna install a few things. 
@@ -72,7 +72,7 @@ So we wanna install a few things.
  - (optional) `parsec-bin` (AUR) for low latency streaming to the VM remotely
  - (optional, doesn't matter but i recommend) `sunshine` (AUR) to access the host using NVIDIA gamestream API. can be used for remote access using `moonlight` in the windows VM using Parsec or via remote LAN solutions like ZeroTier.
 
- make it a one liner with `pacaur -Syu --noconfirm libvirt qemu-full virt-manager cockpit cockpit-machines edk2-ovmf ebtables dnsmasq looking-glass-client parsec-bin scream sunshine` you might wanna edit `/etc/pacman.conf` to allow for parallel downloads to speed up the download process. **note that this command may take a while since AUR packages need to be compiled locally.**
+ make it a one liner with `pacaur -Syu libvirt qemu-full virt-manager cockpit cockpit-machines edk2-ovmf ebtables dnsmasq looking-glass-client parsec-bin scream sunshine` you might wanna edit `/etc/pacman.conf` to allow for parallel downloads to speed up the download process. **note that this command may take a while since AUR packages need to be compiled locally.**
 
 ##### Installing Things for Debian
 mostly the same stuff, but with different names.
@@ -183,7 +183,7 @@ What you want to look for here, is the first number, in my case the `01` to be t
 If your IOMMU groups aren't valid, then you'll have to perform the ACS Override Patch. There's 2 ways to do it, and you can do whichever one you choose. You can choose to a, Patch the Kernel yourself, which Bryan Steiner also covers, or b) install a different Kernel, notably the Zen Kernel or the linux-vfio Kernel, which have the ACS Override Patch built in, and you just need to specify `pcie_acs_override=downstream` in the boot parameters to ensure the Kernel loads it
 
 ##### 1.3.1: Installing a different kernel -- Arch
-This process is very straightforward. All you have to do is type `sudo pacman -S linux-vfio` for the VFIO Kernel or Arch systems, or `sudo apt install linux-vfio` for Debian based systems. Likewise, for the Zen Kernel, just replace `linux-vfio`, with `linux-zen`. After installing one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
+This process is very straightforward. All you have to do is type `pacaur -S linux-vfio` for the VFIO Kernel on Arch systems. On Manjaro, its `pacaur -S linux-vfio-manjaro`. **Make sure you use `linux-vfio-manjaro` on a Manjaro system. i wasn't able to compile the normal kernel on my PC. it ended up crashing. (haha 4.5GHz w stock cooling go brr)** For the Zen Kernel, just replace `linux-vfio`, with `linux-zen` on Arch based systems. On Manjaro, look it up in the `Add/Remove Software` Utility. After installing one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
 ![grub settings with ACS Override Patch](image not here yet)
 
 ##### 1.3.2: Patching your Kernel Yourself -- Debian
@@ -199,4 +199,17 @@ The first ISO to get is one for [Windows 10](https://www.microsoft.com/en-us/sof
 
 Next, we're going to get [virtIO Drivers](https://github.com/virtio-win/virtio-win-pkg-scripts/blob/master/README.md). virtIO drivers are available in an ISO and are distributed via Red Hat, the people behind RHEL, and Fedora. These drivers will help with things like Network. **This step is mandatory to install windows, since it doesn't natively support the virtIO bus.**
 
-### 2.0: Configuring Libvirt
+### 2: Configuring Libvirt
+So you finally made it past section 1! In this section we're gonna configure Libvirt to dynamically unbind and rebind the GPU from, and to the host. There are a number of reasons to do this. the first, is flexibility. if you're doing for example some compute work on the host, you can do that. Another reason would be hardware restraints, for example if you only have one GPU and/or no iGP (which is totally alright!)
+ 
+ ##### Note for Single GPU users (no iGP)
+While Libvirt hooks will allow for single GPU passthrough, there are some caveats. notable, 
+1. You won't be able to access the host via gui while using the VM (ssh should still work)
+2. You can only use one system at a time so if you want to say, stream from Linux, that's not going to be an option.
+3. NVIDIA drivers are hit or miss with this. for me, it didn't work well until i force unbound the driver.
+
+##### Note for NVDIA GPU users with a second GPU
+If ryou plan to passthrough the NVIDIA card, then make sure there's no driver assigned to it because it will screw shit up and mess up everything. if you end up keeping the driver, then refer the process used for Single GPU Passthrough later on.
+
+#### 2.1: Getting the Libvirt Hooks Helper
+This process is fairly easy, and so there's no sub sections. First, make the directory that the hooks will go in with `sudo mkdir -p /etc/libvirt/hooks`.
