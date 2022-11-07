@@ -56,17 +56,40 @@ With that done, the BIOS settings should all be good, and you should be ready to
 #### Prerequisite to 1.1: Installing Required Packages and Dependencies
 Before we can get started, we need to install some packages and dependencies. 1, for Arch based distros you'll need an AUR helper. I recommend `pacaur`. Another option is `yay`. You can get `yay` from the official mnajaro repos by sending `sudo pacman -Syu yay` to a terminal. If you prefer `pacaur`, you can build it from the AUR. for the puropse of this guide, i'll be using `yay` for Arch based distros. If you prefer a gui approach, i recommend `octopi`. If none of these are in the official repos of your distro, i've provided a `pacaur` build script so you can use `pacaur`.
 
+#### **Note for autocompile scripts: I'll be asking `sudo` privileges for running these scripts. this is only to make and remove the source code directories. i won't use them for any malicious purpose. if you don't trust me, open the scripts in an editor or check the contents using `cat`. alternatively, you can compile the packages yourself.**
+
 ##### Installing Things for Arch
 So we wanna install a few things. 
  - `virt-manager` to create and manage the VM,
  - `cockpit`, and `cockpit-machines` to manage the VM directly, or remotely over LAN when you're away using something like ZeroTier after it's been setup properly
  - `edk2-ovmf` for the UEFI VM firmware, since Legacy BIOS doesn't support passthrough PCI
  - `qemu-full` KVM
+ - `ebtables` allows for networking
+ - `dnsmasq` useful for bridging
  - `libvirt` which will manage hooks and devices, backend for virt-manager, and the virtualisation api we'll be using
  - `looking-glass-client` which is an AUR package we'll be using to connect to the client's screen while maintaining minimal latency using a shared framebiffer.
  - `scream` this is another AUR package which we'll be using to get shared audio.
  - (optional) `parsec-bin` (AUR) for low latency streaming to the VM remotely
- - (optional) `sunshine` (AUR) for remotely accessing the host (assuming you have 2 video cards) from the VM
+ - (optional, doesn't matter but i recommend) `sunshine` (AUR) to access the host using NVIDIA gamestream API. can be used for remote access using `moonlight` in the windows VM using Parsec or via remote LAN solutions like ZeroTier.
+
+ make it a one liner with `pacaur -Syu libvirt qemu-full virt-manager cockpit cockpit-machines edk2-ovmf ebtables dnsmasq looking-glass-client parsec-bin scream sunshine` you might wanna edit `/etc/pacman.conf` to allow for parallel downloads to speed up the download process. **note that this command may take a while since AUR packages need to be compiled locally.**
+
+##### Installing Things for Debian
+mostly the same stuff, but with different names.
+ - `ebtables`
+ - `dnsmasq`
+ - `virt-manager`
+ - `looking-glass-client`
+ - `libvirt-daemon-system`
+ - `libvirt-clients`
+ - `qemu-kvm`
+ - `qemu-utils`
+ - `ovmf`
+ - `cockpit`
+ - `cockpit-machines`
+ - `libpulse-dev` prerequisite to scream.
+ - **`scream` must be compiled locally. if you're not familiar with this process, you can use the automated script utility to do it automatically. if you don't trust me, you can read the contents of the script using a text editor, or `cat`. see [this note](note) for more info on autocompile scripts.
+ - **parsec (optional) must be downloaded via deb package. from what i know they don't offer a cli install on debian based systems**
 
 #### 1.1: Enabling IOMMU within Linux
 This step is mostly the same in every guide. I'll be using Grub, so I'll provide the instructions for Grub, but also for Systemd Boot. The general parameter you're gonna wanna add is `intel_iommu=on` for an Intel CPU, or `amd_iommu=on` for AMD, as well as `iommu=pt` for both manufacturers, and this will apply to both Grub, and Systemd. **\*\*note: I've read in certain guides that assuming IOMMU is enabled in BIOS, The Linux Kernel will automatically enable it on AMD systems. I'm not 100% sure of this so I've added the correct parameter to my own setup just in case. i advise you do the same.**
