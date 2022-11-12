@@ -211,5 +211,5 @@ While Libvirt hooks will allow for single GPU passthrough, there are some caveat
 ##### Note for NVDIA GPU users with a second GPU
 If ryou plan to passthrough the NVIDIA card, then make sure there's no driver assigned to it because it will screw shit up and mess up everything. if you end up keeping the driver, then refer the process used for Single GPU Passthrough later on.
 
-#### 2.1: Getting the Libvirt Hooks Helper
-This process is fairly easy, and so there's no sub sections. First, make the directory that the hooks will go in with `sudo mkdir -p /etc/libvirt/hooks`.
+#### 2.0: Getting the Libvirt Hooks Helper
+This process is fairly easy, and so there's no sub sections. First, make the directory that the hooks will go in with `sudo mkdir -p /etc/libvirt/hooks`. Next, get the Libvirt Hok Helper provided by [Passthrough Post](https://passthroughpo.st/simple-per-vm-libvirt-hooks-with-the-vfio-tools-hook-helper/)
