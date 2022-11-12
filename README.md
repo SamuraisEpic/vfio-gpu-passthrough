@@ -1,5 +1,7 @@
 # vfio-pci Passthrough Guide
 
+### Note: if at anytime you're a little confused at to what  something means, i've included a list of terms in this repo as well.
+
 ### Greeting
 Thanks for checking out this guide. If you use Linux and have have 2 GPUs (integrated graphics count too!), and plan to make for example a Gaming VM with windows on it to pass a card to, this guide will help you get started.
 
