@@ -70,11 +70,11 @@ So we wanna install a few things.
  - `dnsmasq` useful for bridging
  - `libvirt` which will manage hooks and devices, backend for virt-manager, and the virtualisation api we'll be using
  - `looking-glass-client` which is an AUR package we'll be using to connect to the client's screen while maintaining minimal latency using a shared framebiffer.
- - `scream` this is another AUR package which we'll be using to get shared audio.
+ - `scream` this is a package you need to compile from source, and i've added a script to this repo that does it for you.
  - (optional) `parsec-bin` (AUR) for low latency streaming to the VM remotely
  - (optional, doesn't matter but i recommend) `sunshine` (AUR) to access the host using NVIDIA gamestream API. can be used for remote access using `moonlight` in the windows VM using Parsec or via remote LAN solutions like ZeroTier.
 
- make it a one liner with `pacaur -Syu libvirt qemu-full virt-manager cockpit cockpit-machines edk2-ovmf ebtables dnsmasq looking-glass-client parsec-bin scream sunshine` you might wanna edit `/etc/pacman.conf` to allow for parallel downloads to speed up the download process. **note that this command may take a while since AUR packages need to be compiled locally.**
+ make it a one liner with `pacaur -Syu libvirt qemu-full virt-manager cockpit cockpit-machines edk2-ovmf ebtables dnsmasq looking-glass-client parsec-bin sunshine` you might wanna edit `/etc/pacman.conf` to allow for parallel downloads to speed up the download process. **note that this command may take a while since AUR packages need to be compiled locally.**
 
 ##### Installing Things for Debian
 mostly the same stuff, but with different names.
@@ -174,10 +174,23 @@ Now, the biggest thing to look for here, is that your GPU's Audio and Video (and
 
 Since my GPU's group looks like this, i'm good.
 ```
-01:00.0 VGA compatible controller [0300]: NVIDIA Corporation TU106 [GeForce RTX 2060 12GB] [10de:1f03] (rev a1)
-01:00.1 Audio device [0403]: NVIDIA Corporation TU106 High Definition Audio Controller [10de:10f9] (rev a1)
+IOMMU Group 8 01:00.0 VGA compatible controller [0300]: NVIDIA Corporation TU106 [GeForce RTX 2060 12GB] [10de:1f03] (rev a1)
+IOMMU Group 8 01:00.1 Audio device [0403]: NVIDIA Corporation TU106 High Definition Audio Controller [10de:10f9] (rev a1)
 ```
-What you want to look for here, is the first number, in my case the `01` to be that same, and for that to only have one card in it. for example, a `01:00.0 NVIDIA Video, and 01:00.1 NVIDIA Video` is good, but `01:00.1 NVIDIA Video, 01:00.2 NVIDIA Audio, 01:00.3 Second Video Component, 01:00.4 Second Audio Component` is bad.
+What you want to look for here, is the first number, in my case the `01` to be that same, and for that to only have one card in it. for example, a 
+```
+IOMMU Group 1: NVIDIA Video
+IOMMU Group 1: NVIDIA Audio
+```  
+is good, but 
+
+```
+IOMMU Group 1: NVIDIA Video
+IOMMU Group 1: NVIDIA Audio
+IOMMU Group 1: Second Video Component
+IOMMU Group 1: Second Audio Component 
+``` 
+is bad.
 
  If there are other things in there, or if your second GPU is also in there, like the second one, you'll have to perform the ACS Override Patch to ensure your GPU is in its own isolated group.
 
@@ -185,7 +198,7 @@ What you want to look for here, is the first number, in my case the `01` to be t
 If your IOMMU groups aren't valid, then you'll have to perform the ACS Override Patch. There's 2 ways to do it, and you can do whichever one you choose. You can choose to a, Patch the Kernel yourself, which Bryan Steiner also covers, or b) install a different Kernel, notably the Zen Kernel or the linux-vfio Kernel, which have the ACS Override Patch built in, and you just need to specify `pcie_acs_override=downstream` in the boot parameters to ensure the Kernel loads it
 
 ##### 1.3.1: Installing a different kernel -- Arch
-This process is very straightforward. All you have to do is type `pacaur -S linux-vfio` for the VFIO Kernel on Arch systems. On Manjaro, its `pacaur -S linux-vfio-manjaro`. **Make sure you use `linux-vfio-manjaro` on a Manjaro system. i wasn't able to compile the normal kernel on my PC. it ended up crashing. (haha 4.5GHz w stock cooling go brr)** For the Zen Kernel, just replace `linux-vfio`, with `linux-zen` on Arch based systems. On Manjaro, look it up in the `Add/Remove Software` Utility. After installing one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
+This process is very straightforward. All you have to do is type `pacaur -S linux-vfio` for the VFIO Kernel on Arch systems. On Manjaro, its `pacaur -S linux-vfio-manjaro`. **Make sure you use `linux-vfio-manjaro` on a Manjaro system. i wasn't able to compile the normal kernel on my PC. it ended up crashing. (haha 4.5GHz w stock cooling go brr)** For the Zen Kernel, just replace `linux-vfio`, with `linux-zen` on Arch based systems. On Manjaro, look it up in the `Add/Remove Software` Utility (`pamac`). After installing one of the Kernels that has it built in, you then need to specify the ACS Override Patch in the boot process. For grub, just edit `/etc/default/grub` and add the parameter `pcie_acs_override=downstream` to `GRUB_CMDLINE_LINUX_DEFAULT` so, with all the modifications we've made it should look like this (for AMD - Intel has a dfferent IOMMU param [intel_iommu=on]) 
 ![grub settings with ACS Override Patch](image not here yet)
 
 ##### 1.3.2: Patching your Kernel Yourself -- Debian
@@ -214,4 +227,4 @@ While Libvirt hooks will allow for single GPU passthrough, there are some caveat
 If ryou plan to passthrough the NVIDIA card, then make sure there's no driver assigned to it because it will screw shit up and mess up everything. if you end up keeping the driver, then refer the process used for Single GPU Passthrough later on.
 
 #### 2.0: Getting the Libvirt Hooks Helper
-This process is fairly easy, and so there's no sub sections. First, make the directory that the hooks will go in with `sudo mkdir -p /etc/libvirt/hooks`. Next, get the Libvirt Hok Helper provided by [Passthrough Post](https://passthroughpo.st/simple-per-vm-libvirt-hooks-with-the-vfio-tools-hook-helper/)
+This process is fairly easy, and so there's no sub sections. First, make the directory that the hooks will go in with `sudo mkdir -p /etc/libvirt/hooks`. Next, get the Libvirt Hook Helper provided by [Passthrough Post](https://passthroughpo.st/simple-per-vm-libvirt-hooks-with-the-vfio-tools-hook-helper/)
