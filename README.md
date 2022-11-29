@@ -11,7 +11,7 @@ Though in this guide I'll be using Libvirt hooks, like the greeting mentions, th
 ### Intro
 So, why all of this? Well, that's for you to decide. For me it was moving my workflow off of windows for the sake of privacy, stability, and reliability, while still retaining the ability to play certain games. And you might be asking "Why not use Wine, or play natively?" and the answer is that sometimes, its easier to run the VM then jumping through hoops applying patches and using Wine, or the fact that certain anticheats only support windows and not even Proton. With that out of the way, before i get started on the guide, Let's layout some details.
 
-1: This guide focuses on Manjaro, and certain things will only apply to Arch and Manjaro. I'll try to leave Debian commands as well, but i won't be supporting distros like RHEL, Fedora, and Gentoo. Certain steps will also only apply to Arch, and I'll point those out when i get to them
+1: This guide focuses on Arch, and certain things will only apply to Arch and Manjaro. I'll try to leave Debian commands as well, but i won't be supporting distros like RHEL, Fedora, and Gentoo. Certain steps will also only apply to Arch, and I'll point those out when i get to them
 
 2: Since this is both my first guide, and a beginner-friendly tutorial, i'll leave out more advanced topics like CPU Pinning and Disk Tuning from [Bryan Steiner's guide](https://github.com/bryansteiner/gpu-passthrough-tutorial#----cpu-pinning)
 
