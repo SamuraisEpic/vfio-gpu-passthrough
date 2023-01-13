@@ -2,6 +2,8 @@
 
 ### Note: if at anytime you're a little confused at to what  something means, i've included a list of terms in this repo as well.
 
+### Another note: my life's gotten a lot more chaotic, and as a result, addition to this guide has mostly come to a stop. I'm not going to abandon it, but for the time being commits will be few and far between, but hopefully contain a lot more actual content. things seem to be a bit better now, but there probably still won't be any commits for the next few weeks as i have exams coming up. the writing will also be different, as now i'll be prioritising content over format.
+
 ### Greeting
 Thanks for checking out this guide. If you use Linux and have have 2 GPUs (integrated graphics count too!), and plan to make for example a Gaming VM with windows on it to pass a card to, this guide will help you get started.
 
@@ -93,7 +95,7 @@ mostly the same stuff, but with different names.
  - **`scream` must be compiled locally. if you're not familiar with this process, you can use the automated script utility to do it automatically. if you don't trust me, you can read the contents of the script using a text editor, or use `cat`. see [this note](https://github.com/SamuraisEpic/vfio-gpu-passthrough#note-for-autocompile-scripts-ill-be-asking-sudo-privileges-for-running-these-scripts-this-is-only-to-make-and-remove-the-source-code-directories-i-wont-use-them-for-any-malicious-purpose-if-you-dont-trust-me-open-the-scripts-in-an-editor-or-check-the-contents-using-cat-alternatively-you-can-compile-the-packages-yourself) for more info on autocompile scripts.
  - **parsec (optional) must be downloaded via deb package. from what i know they don't offer a cli install on debian based systems**
 
- make it a one liner with `sudo apt install ebtables dnsmasq virt-manager looking-glass-client libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils ovmf cockpit cockpit-machines libpulse-dev -y` make sure your system and package lists are up to date before running this command. i don't think you can make that part of the install command like with `pacman`.
+ make it a one liner with `sudo apt install ebtables dnsmasq virt-manager looking-glass-client libvirt-daemon-system libvirt-clients qemu-kvm qemu-utils ovmf cockpit cockpit-machines libpulse-dev -y` make sure your system and package lists are up to date before running this command. i don't think you can make that part of the install command like with `pacman`, but im probably wrong.
 
 #### 1.1: Enabling IOMMU within Linux
 This step is mostly the same in every guide. I'll be using Grub, so I'll provide the instructions for Grub, but also for Systemd Boot. The general parameter you're gonna wanna add is `intel_iommu=on` for an Intel CPU, or `amd_iommu=on` for AMD, as well as `iommu=pt` for both manufacturers, and this will apply to both Grub, and Systemd. **\*\*note: I've read in certain guides that assuming IOMMU is enabled in BIOS, The Linux Kernel will automatically enable it on AMD systems. I'm not 100% sure of this so I've added the correct parameter to my own setup just in case. i advise you do the same.**
