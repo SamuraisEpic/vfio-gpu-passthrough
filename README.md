@@ -24,7 +24,7 @@ GPU | ASUS NVIDIA Geforce RTX 2060 12GB
 RAM | 16GB G.SKILL Aegis DDR4 3000 with XMP
 Motherboard | ASUS Prime B550 Plus
 BIOS Version | 2803
-Software | Arch Linux x86_64
+Linux | Arch Linux x86_64
 Kernel | 6.0.8-zen1-1-zen
 QEMU Version | QEMU emulator version 7.1.0
 Libvirt Version | 8.8.0
@@ -69,12 +69,12 @@ So we wanna install a few things.
  - `ebtables` allows for networking
  - `dnsmasq` useful for bridging
  - `libvirt` which will manage hooks and devices, backend for virt-manager, and the virtualisation api we'll be using
- - `looking-glass-client` which is an AUR package we'll be using to connect to the client's screen while maintaining minimal latency using a shared framebiffer.
+ - `looking-glass` which is an AUR package we'll be using to connect to the client's screen while maintaining minimal latency using a shared framebiffer.
  - `scream` this is a package you need to compile from source, and i've added a script to this repo that does it for you.
  - (optional) `parsec-bin` (AUR) for low latency streaming to the VM remotely
  - (optional, doesn't matter but i recommend) `sunshine` (AUR) to access the host using NVIDIA gamestream API. can be used for remote access using `moonlight` in the windows VM using Parsec or via remote LAN solutions like ZeroTier.
 
- make it a one liner with `pacaur -Syu libvirt qemu-full virt-manager cockpit cockpit-machines edk2-ovmf ebtables dnsmasq looking-glass-client parsec-bin sunshine` you might wanna edit `/etc/pacman.conf` to allow for parallel downloads to speed up the download process. **note that this command may take a while since AUR packages need to be compiled locally.**
+ make it a one liner with `pacaur -Syu libvirt qemu-full virt-manager cockpit cockpit-machines edk2-ovmf ebtables dnsmasq looking-glass parsec-bin sunshine` you might wanna edit `/etc/pacman.conf` to allow for parallel downloads to speed up the download process. **note that this command may take a while since AUR packages need to be compiled locally.**
 
 ##### Installing Things for Debian
 mostly the same stuff, but with different names.
