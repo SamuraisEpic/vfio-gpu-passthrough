@@ -230,7 +230,7 @@ If ryou plan to passthrough the NVIDIA card, then make sure there's no driver as
 
 #### 2.0: Getting the Libvirt Hooks Helper
 This process is fairly easy, and so there's no sub sections. First, make the directory that the hooks will go in with `sudo mkdir -p /etc/libvirt/hooks`. Next, get the Libvirt Hook Helper provided by [Passthrough Post](https://passthroughpo.st/simple-per-vm-libvirt-hooks-with-the-vfio-tools-hook-helper/) by running `sudo wget 'https://raw.githubusercontent.com/PassthroughPOST/VFIO-Tools/master/libvirt_hooks/qemu' \
-     -O /etc/libvirt/hooks/qemu. make `qemu` executable with `sudo chmod +x /etc/libvirt/hooks/qemu`. after this, start `libvirtd` and the logging component `virtlogd`. for systemd, run `sudo systemctl enable --now libvirtd virtlogd.socket`. for openrc, run `rc-service libvirtd start && rc-service virtlogd add && rc-update enable libvirtd && rc-update enable virtlogd` (i dont know a better way to do this sorry maybe just make a new branch it and make a pull request with a better command) :)
+     -O /etc/libvirt/hooks/qemu. make `qemu` executable with `sudo chmod +x /etc/libvirt/hooks/qemu`. after this, start `libvirtd` and the logging component `virtlogd`. for systemd, run `sudo systemctl enable --now libvirtd virtlogd.socket`. for openrc, run `rc-service libvirtd start && rc-service virtlogd add && rc-update enable libvirtd && rc-update enable virtlogd` (i dont know a better way to do this sorry maybe just fork it and make a pull request with a better command? 'preciate it)
 done? good. next, we move to [2.1: making scripts](link)
 
 #### 2.1: Making Scripts
