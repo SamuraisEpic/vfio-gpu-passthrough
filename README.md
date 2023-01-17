@@ -1,8 +1,8 @@
 # vfio-pci Passthrough Guide
 
-### Note: if at anytime you're a little confused at to what  something means, i've included a list of terms in this repo as well.
+## my life's gotten a lot more chaotic, and as a result, addition to this guide has mostly come to a stop. I'm not going to abandon it, but for the time being commits will be few and far between, but hopefully contain a lot more actual content. things seem to be a bit better now, but there probably still won't be any commits for the next few weeks as i have exams coming up. the writing will also be different, as now i'll be prioritising content over format.
 
-### Another note: my life's gotten a lot more chaotic, and as a result, addition to this guide has mostly come to a stop. I'm not going to abandon it, but for the time being commits will be few and far between, but hopefully contain a lot more actual content. things seem to be a bit better now, but there probably still won't be any commits for the next few weeks as i have exams coming up. the writing will also be different, as now i'll be prioritising content over format.
+### Note: if at anytime you're a little confused at to what  something means, i've included a list of terms in this repo as well.
 
 ### Greeting
 Thanks for checking out this guide. If you use Linux and have have 2 GPUs (integrated graphics count too!), and plan to make for example a Gaming VM with windows on it to pass a card to, this guide will help you get started.
@@ -234,5 +234,10 @@ This process is fairly easy, and so there's no sub sections. First, make the dir
 done? good. next, we move to [2.1: making scripts](link)
 
 #### 2.1: Making Scripts
-
-  ##### 2.1.0: Binding hooks
+this step will cover the making of the hooks 1 to bind, 1 to unbind, and some performance tweaks in [3.0?](no link)
+  ##### 2.1.0: vfio Bind script
+  for this: first run a tree of your hooks with `tree /etc/libvirt/hooks`. you should get an output like this
+  ```
+  <output>
+  ```
+  now within here make a directory called `qemu.d` (`mkdir /etc/libvirt/hook/qemu.d`) 
