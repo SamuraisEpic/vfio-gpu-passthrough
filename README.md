@@ -1,6 +1,6 @@
 # vfio-pci Passthrough Guide
 
-## my life's gotten a lot more chaotic, and as a result, addition to this guide has mostly come to a stop. I'm not going to abandon it, but for the time being commits will be few and far between, but hopefully contain a lot more actual content. things seem to be a bit better now, but there probably still won't be any commits for the next few weeks as i have exams coming up. the writing will also be different, as now i'll be prioritising content over format.
+## ~~my life's gotten a lot more chaotic, and as a result, addition to this guide has mostly come to a stop. I'm not going to abandon it, but for the time being commits will be few and far between, but hopefully contain a lot more actual content. things seem to be a bit better now, but there probably still won't be any commits for the next few weeks as i have exams coming up. the writing will also be different, as now i'll be prioritising content over format.~~ It's been well over year of no activity, and I've ended up abandoning this guide as i stopped using passthrough, and so have no ambition to keep working on this guide as i've started to forget a lot of stuff. don't lose hope yet, i might come back to finish it before 2077.
 
 ### Note: if at anytime you're a little confused at to what  something means, i've included a list of terms in this repo as well.
 
